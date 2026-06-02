@@ -1,0 +1,24 @@
+﻿# encoding: utf-8
+# Release 18.2
+SetScriptVersion(Version="18.2.109")
+fileReference1 = GetFileReference(Name="F1")
+SetFileDeletable(
+    File=fileReference1,
+    IsDeletable=True)
+fileReference1.Unregister(
+    DeleteFileIfNonShared="False",
+    BackUp=False)
+system1 = GetSystem(Name="SYS")
+geometry1 = system1.GetContainer(ComponentName="Geometry")
+geometry1.Edit()
+geometry1.Exit()
+geometry1.Edit()
+geometry1.Exit()
+fileReference2 = GetFileReference(Name="F8")
+SetFileDeletable(
+    File=fileReference2,
+    IsDeletable=True)
+fileReference2.Unregister(
+    DeleteFileIfNonShared="False",
+    BackUp=False)
+Save(Overwrite=True)

@@ -1,0 +1,70 @@
+# encoding: utf-8
+# 2026 R1
+SetScriptVersion(Version="26.1.174")
+system1 = GetSystem(Name="SYS")
+model1 = system1.GetContainer(ComponentName="Model")
+model1.Edit()
+engineeringData1 = system1.GetContainer(ComponentName="Engineering Data")
+matl1 = engineeringData1.CreateMaterial(Name="Al 6061 T6")
+matlProp1 = matl1.CreateProperty(
+    Name="Elasticity",
+    Behavior="Isotropic",
+    Qualifiers={"Definition": "", "Behavior": "Isotropic"})
+matlProp1.SetData(
+    Index=-1,
+    Variables=["Young's Modulus"],
+    Values=[["10000000 [Pa]"]])
+matlProp1.SetData(
+    Variables=["Poisson's Ratio"],
+    Values=[["0.33"]])
+modelComponent1 = system1.GetComponent(Name="Model")
+modelComponent1.Refresh()
+matl1.Delete()
+modelComponent1.Refresh()
+matl2 = engineeringData1.CreateMaterial(Name="Al 6061 T6")
+matlProp2 = matl2.CreateProperty(
+    Name="Elasticity",
+    Behavior="Isotropic",
+    Qualifiers={"Definition": "", "Behavior": "Isotropic"})
+materialPropertyData1 = matlProp2.GetPropertyData(
+    Name="Elasticity",
+    Qualifiers={"Definition": "", "Behavior": "Isotropic", "Derive from": "Young's Modulus and Poisson's Ratio"})
+materialVariable1 = materialPropertyData1.GetVariable(Name="Young's Modulus")
+parameter1 = Parameters.CreateParameter(
+    Entity=materialVariable1,
+    PropertyName="ParameterValue",
+    DisplayText="Young's Modulus")
+parameter1.ValueQuantityName = "Stress"
+parameter1.Disassociate(
+    Entity=materialVariable1,
+    PropertyName="ParameterValue")
+parameter1.Delete()
+favorites1 = EngData.LoadFavoriteItems()
+matl2.Delete()
+matl3 = engineeringData1.CreateMaterial(Name="Al 6061 T6")
+matlProp3 = matl3.CreateProperty(
+    Name="Elasticity",
+    Behavior="Isotropic",
+    Qualifiers={"Definition": "", "Behavior": "Isotropic"})
+unitSystem1 = SetProjectUnitSystem(UnitSystemName="BIN_STANDARD")
+matlProp3.SetData(
+    Index=-1,
+    Variables=["Young's Modulus"],
+    Values=[["10000000 [psi]"]])
+matlProp3.SetData(
+    Variables=["Poisson's Ratio"],
+    Values=[["0.33"]])
+modelComponent1.Refresh()
+Save(Overwrite=True)
+Save(Overwrite=True)
+Save(Overwrite=True)
+Save(Overwrite=True)
+system1.Copy(KeepConnections=True)
+system2 = GetSystem(Name="SYS 1")
+system2.DisplayText = "Refined mesh"
+model2 = system2.GetContainer(ComponentName="Model")
+model2.Edit()
+Save(Overwrite=True)
+Save(Overwrite=True)
+Save(Overwrite=True)
+Save(Overwrite=True)
